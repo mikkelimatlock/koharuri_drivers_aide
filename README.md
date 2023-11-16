@@ -1,21 +1,21 @@
 # Koharuri Driver's Aid
 A Koharu Rikka warning you about speeding and all.  
 ## TODO
-- In case I forget: migrate / connect with BeamNG
+- **In case I forget: migrate / connect with BeamNG**  
 Refer to this [manual](https://documentation.beamng.com/modding/ui/app_creation/)  
 Leave some generic functions because we're not that much into BeamNG!!  
 
-- Do all the lines  
+- **Make all the lines**  
 With VOICEPEAK Rikka  
 
-- Randomise lines a bit  
-I'll figure out how  
+- **Randomise lines a bit**  
+I'll figure out how, and I'll write TODOs in the code, not here  
 
-- Fix state migration (see agent_actions.js)  
+- **Fix state migration (see agent_actions.js)**  
 More details in the code itself, not here   
 
 ## How to debug
-- The safer way: using a local server  
+- **The safer way: using a local server**  
 Navigate to root directory (which should be here),  
 run: `python -m http.server [port]`,  
 boot a browser and open up `http://localhost:port`,  
