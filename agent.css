@@ -1,6 +1,21 @@
 /* agent.css */
 #agent {
-    width: 200px; /* Adjust size as needed */
-    position: fixed; /* Or any other positioning as per your design */
-    /* Add more styles as required */
+  position: fixed; /* Keeps the agent in a fixed position */
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0; /* This will make the agent take up the entire viewport */
+  max-width: 90%; /* Maximum width as a percentage of the viewport width */
+  max-height: 90%; /* Maximum height as a percentage of the viewport height */
+  margin: auto; /* This will center the div */
+  display: flex; /* Using flexbox for centering content */
+  justify-content: center; /* Center horizontally in the flex container */
+  align-items: center; /* Center vertically in the flex container */
+  transition: width 0.5s ease-in-out; /* Smooth transition for resizing */
+}
+#agentPortrait {
+  height: auto; /* This will maintain the image's aspect ratio */
+  display: block; /* Ensures the image is a block-level element and takes the full width */
+  max-height: 100%; /* Maximum height as a percentage of the #agent div's height, and this fills it up */
+  max-width: 100%;
 }
