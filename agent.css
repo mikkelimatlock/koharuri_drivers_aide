@@ -1,4 +1,30 @@
 /* agent.css */
+
+/* some animation */
+@keyframes shake_heavy {
+  0%, 100% { 
+    transform: translateX(0) translateY(0);
+  }
+  20% { 
+    transform: translateX(-1vw) translateY(+1.5vh);
+  }
+  40% { 
+    transform: translateX(-0.5vw) translateY(+0.5vh); 
+  }
+  60% { 
+    transform: translateX(+1vw) translateY(+1vh);
+  }
+  80% {
+    transform: translateX(+1.5vw) translateY(+0.5vh); 
+  }
+}
+
+.shaking_heavy {
+  animation: shake_heavy 0.2s; /* Adjust duration as needed */
+  animation-iteration-count: infinite; /* Or a specific number of iterations */
+}
+
+
 #agent {
   position: fixed; /* Keeps the agent in a fixed position */
   left: 0;
