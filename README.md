@@ -16,10 +16,13 @@ More details in the code itself, not here
 
 ## How to debug
 - **The safer way: using a local server**  
-Navigate to root directory (which should be here),  
+Navigate to root directory (which should be where this readme is),  
 run: `python -m http.server [port]`,  
-boot a browser and open up `http://localhost:port`,  
+boot up a browser and open up `http://localhost:port`,  
 do everything.  
+
+- **Debugging with BeamNG**  
+I have no idea how to do that as of now.  
 
 ## About Koharu Rikka
 Koharu Rikka (小春六花) is a character owned and managed by TOKYO6 ENTERTAINMENT.  
