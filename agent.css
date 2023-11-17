@@ -19,6 +19,24 @@
   }
 }
 
+@keyframes shake_medium {
+  0%, 100% { 
+    transform: translate(0, 0);
+  }
+  20% { 
+    transform: translate(-.5vw, +1vh);
+  }
+  40% { 
+    transform: translate(-0.25vw, +0.3vh); 
+  }
+  60% { 
+    transform: translate(+.5vw, +.6vh);
+  }
+  80% {
+    transform: translate(+.25vw, +0.3vh); 
+  }
+}
+
 @keyframes shake_light {
   0%, 100% {
     transform: translate(0, 0);
@@ -37,6 +55,11 @@
 .shaking_heavy {
   animation: shake_heavy 0.2s; /* Adjust duration as needed */
   animation-iteration-count: infinite; /* Or a specific number of iterations */
+}
+
+.shaking_medium {
+  animation: shake_medium 0.3s; 
+  animation-iteration-count: infinite;
 }
 
 .shaking_light {

@@ -2,64 +2,97 @@
 
 document.addEventListener('keydown', function(event) {
     if (event.key === 'a') { // Replace with appropriate trigger
-        // changeAgentState('happy.png', 'happy.mp3');
-        changeAgentState('angry', 'voices/angry.mp3')
+        changeAgentState('speeding')
     }
     if (event.key === 'd') {
-      changeAgentState('composed', 'voices/composed.mp3')
+      changeAgentState('praise')
     }
-    // Fix audio path later
     if (event.key === 's') {
-      changeAgentState('default', 'voices/default.mp3')
+      changeAgentState('default')
     }
     // Add more conditions as needed
 });
 
-function voiceRandomiser(state) {
-  /* List of available voices for each state */
+function voiceRandomiser(event) {
+  /* List of available voices for each type of content */
   const voices = {
-    'angry': ['voices/rikka/angry1.wav']
+    'angry': ['voices/rikka/angry1.wav'],
+    'speeding': ['voices/rikka/speeding1.wav'],
   }; 
   //
   /* Default state does not have voices */
-  if (state != 'default') {
-    if (voices[state] && voices[state].length > 0) {
-      let randomIndex = Math.floor(Math.random() * voices[state].length);
-      return voices[state][randomIndex];
+  if (event != 'default') {
+    if (voices[event] && voices[event].length > 0) {
+      let randomIndex = Math.floor(Math.random() * voices[event].length);
+      return voices[event][randomIndex];
     }
   }
   else return null;
 }
 
-function changeAgentState(state) {
-  /* a face changer */
-  let portrait = 'images/' + state + '.png';
+function changeAgentPortrait(emotion) {
+
+
+  let portrait = 'images/' + emotion + '.png';
   let agentPortrait = document.getElementById('agentPortrait')
   agentPortrait.src = portrait;
+}
 
+function changeAgentAnimation(intensity) {
+  let agentPortrait = document.getElementById('agentPortrait')
+  switch(intensity) {
+    case 'light':
+      agentPortrait.classList.add('shaking_light');
+      break;
+    case 'heavy':
+      agentPortrait.classList.add('shaking_heavy');
+      break;
+    case 'medium':
+      agentPortrait.classList.add('shaking_medium');
+      break;
+    case 'none':
+    default:
+      agentPortrait.classList.remove('shaking_light');
+      agentPortrait.classList.remove('shaking_medium');
+      agentPortrait.classList.remove('shaking_heavy');
+  }
+}
+
+function changeAgentAudio(event) {
   let agentAudio = document.getElementById('agentAudio');
-  
+  audioPath = voiceRandomiser(event);
+  agentAudio.src = audioPath;
+  agentAudio.play();
 
+}
+
+function changeAgentState(event) {
+  let agent = document.getElementById('agent');
+  agent.dataset.currentEvent = event;
+
+  /* corresponding emotions (for portrait) for each type of event */
+  const emotionByEvent = {
+    'speeding': 'worried',
+    'praise': 'glad',
+    'hard_brake': 'angry',
+  }
   /* animations and fixing the div element */ 
   const shakingIntensity = {
-    'angry': 'shaking_heavy',
-    'composed': 'shaking_light'
+    'angry': 'heavy',
+    'worried': 'medium',
+    'glad': 'light'
   };
   
-  if (state != 'default') {
-    /* clear any existing shakings */
-    agentPortrait.classList.remove('shaking_heavy');
-    agentPortrait.classList.remove('shaking_light');
-
-    agentPortrait.classList.add(shakingIntensity[state]);
-    let newVoicePath = voiceRandomiser(state);
-    agentAudio.src = newVoicePath;
-    agentAudio.play();
+  emotion = emotionByEvent[event];
+ 
+  if (event === 'default') {
+    changeAgentPortrait('default');
+    changeAgentAudio('default');
+    changeAgentAnimation('none');
   }
-  if (state === 'default') {
-    agentPortrait.classList.remove('shaking_heavy');
-    agentPortrait.classList.remove('shaking_light');
-    /* remove the current audio path */
-    agentAudio.src = '';
+  else {
+    changeAgentPortrait(emotion);
+    changeAgentAudio(event);
+    changeAgentAnimation(shakingIntensity[emotion]);
   }
 }
