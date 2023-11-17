@@ -1,5 +1,6 @@
 // agent_actions.js
 
+/* testing triggers. delete when integrating with anything more useful */
 document.addEventListener('keydown', function(event) {
     if (event.key === 'a') { // Replace with appropriate trigger
         changeAgentState('speeding')
