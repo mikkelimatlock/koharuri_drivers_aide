@@ -16,15 +16,16 @@ document.addEventListener('keydown', function(event) {
 function voiceRandomiser(event) {
   /* List of available voices for each type of content */
   const voices = {
-    'angry': ['voices/rikka/angry1.wav'],
-    'speeding': ['voices/rikka/speeding1.wav'],
+    'angry': ['angry1.wav'],
+    'speeding': ['speeding1.wav', 'speeding2.wav'],
+    'praise': ['praise1.wav'],
   }; 
   //
   /* Default state does not have voices */
   if (event != 'default') {
     if (voices[event] && voices[event].length > 0) {
       let randomIndex = Math.floor(Math.random() * voices[event].length);
-      return voices[event][randomIndex];
+      return 'voices/rikka/' + voices[event][randomIndex];
     }
   }
   else return null;
