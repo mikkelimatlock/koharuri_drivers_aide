@@ -16,8 +16,10 @@ More details in the code itself, not here
 
 ## How to debug
 - **Now integrated with Node.js server!**  
-Requires Node.js and express to run... properly.  
-`npm install express`  
+Requires Node.js and npm packages `express` and `morgan` to run... properly.  
+`npm install express morgan`  
+BeamNG OutGauge requires `dgram`.  
+`npm install dgram`  
 Boot up the server with:  
 `node server.js`  
 Should be at `http://localhost:5860`  
