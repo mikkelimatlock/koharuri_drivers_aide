@@ -1,4 +1,4 @@
-# Koharuri Driver's Aid
+# Koharuri Driver's Aide
 A Koharu Rikka warning you about speeding and all.  
 ## TODO
 - **In case I forget: migrate / connect with BeamNG**  
