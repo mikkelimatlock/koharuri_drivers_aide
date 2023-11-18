@@ -1,9 +1,15 @@
 // agent_actions.js
 
-/* testing triggers. delete when integrating with anything more useful */
+// GLOBALs
+var default_state = 'default';
+var current_mentality = 1; // positive for happier, negative for more worried.
+// not really used now
+
+/* testing triggers. delete / comment when integrating with anything more useful */
 document.addEventListener('keydown', function(event) {
     if (event.key === 'a') { // Replace with appropriate trigger
-        changeAgentState('speeding')
+      console.log("speeding event triggered");
+      changeAgentState('speeding')
     }
     if (event.key === 'd') {
       changeAgentState('praise')
@@ -29,12 +35,9 @@ function voiceRandomiser(event) {
       return 'voices/rikka/' + voices[event][randomIndex];
     }
   }
-  else return null;
 }
 
 function changeAgentPortrait(emotion) {
-
-
   let portrait = 'images/' + emotion + '.png';
   let agentPortrait = document.getElementById('agentPortrait')
   agentPortrait.src = portrait;
@@ -62,15 +65,25 @@ function changeAgentAnimation(intensity) {
 
 function changeAgentAudio(event) {
   let agentAudio = document.getElementById('agentAudio');
-  audioPath = voiceRandomiser(event);
-  agentAudio.src = audioPath;
-  agentAudio.play();
-
+  if (event === 'default') {
+    agentAudio.src = '';
+    agentAudio.pause();
+    return;
+  }
+  else {
+    audioPath = voiceRandomiser(event);
+    agentAudio.src = audioPath;
+    agentAudio.onended = function(){
+      changeAgentState('default');
+    }
+    agentAudio.play();
+  }
 }
 
 function changeAgentState(event) {
+  console.log("changing agent state to " + event);
   let agent = document.getElementById('agent');
-  agent.dataset.currentEvent = event;
+  agent.dataset.currentevent = event;
 
   /* corresponding emotions (for portrait) for each type of event */
   const emotionByEvent = {
@@ -88,7 +101,7 @@ function changeAgentState(event) {
   emotion = emotionByEvent[event];
  
   if (event === 'default') {
-    changeAgentPortrait('default');
+    changeAgentPortrait(default_state);
     changeAgentAudio('default');
     changeAgentAnimation('none');
   }
