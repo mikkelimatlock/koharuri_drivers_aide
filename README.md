@@ -37,6 +37,8 @@ boot up a browser and open up `http://localhost:[port]` and do everything.
 I have no idea how to do that as of now.  
 
 ## About Koharu Rikka
-Koharu Rikka (小春立花) is a character owned and managed by TOKYO6 ENTERTAINMENT.  
+Koharu Rikka (小春*立*花) is a character owned and managed by TOKYO6 ENTERTAINMENT.  
 Voices used in this project are generated using VOICEPEAK 小春六花.  
-Images used in this project are provided by TOKYO6 via [ニコニコ静画](https://seiga.nicovideo.jp/seiga/im11216393). Used according to the corresponding [guidelines](https://tokyo6.tokyo/guidelines/).
+Images used in this project are provided by TOKYO6 via [ニコニコ静画](https://seiga.nicovideo.jp/seiga/im11216393). Used according to the corresponding [guidelines](https://tokyo6.tokyo/guidelines/).  
+### About the author  
+Enjoying life at Todo-iwa 🦭🪨
