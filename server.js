@@ -1,8 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
 const dgram = require('dgram');
+const http = require('http');
+const WebSocket = require('ws');
 const app = express();
-const httpPort = 5860; // You can use any port that's open
+const httpPort = 5860; // Kind of sounds like koharu rikka, I guess
 const beamngPort = 4444;
 
 /* ************* */

@@ -4,6 +4,8 @@ A Koharu Rikka warning you about speeding and all.
 - **In case I forget: migrate / connect with BeamNG**  
 Refer to this [manual](https://documentation.beamng.com/modding/ui/app_creation/)  
 Leave some generic functions because we're not that much into BeamNG!!  
+Probably? Make this into a UI app.  
+Can access speed limits according to this: [BeamAdvisor](https://github.com/ThatTonybo/BeamAdvisor)  
 
 - **Make all the lines**  
 With VOICEPEAK Rikka  
@@ -18,8 +20,10 @@ More details in the code itself, not here
 - **Now integrated with Node.js server!**  
 Requires Node.js and npm packages `express` and `morgan` to run... properly.  
 `npm install express morgan`  
-BeamNG OutGauge requires `dgram`.  
+BeamNG OutGauge requires `dgram` for... something.  
 `npm install dgram`  
+Communication between frontend/backend requires some WebSocket.  
+`npm install ws`
 Boot up the server with:  
 `node server.js`  
 Should be at `http://localhost:5860`  

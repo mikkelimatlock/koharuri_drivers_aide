@@ -67,6 +67,9 @@
   animation-iteration-count: infinite;
 }
 
+body {
+  background-color: transparent;
+}
 
 #agent {
   position: fixed; /* Keeps the agent in a fixed position */
