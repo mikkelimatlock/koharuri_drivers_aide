@@ -15,11 +15,17 @@ I'll figure out how, and I'll write TODOs in the code, not here
 More details in the code itself, not here   
 
 ## How to debug
-- **The safer way: using a local server**  
-Navigate to root directory (which should be where this readme is),  
-run: `python -m http.server [port]`,  
-boot up a browser and open up `http://localhost:port`,  
-do everything.  
+- **Now integrated with Node.js server!**  
+Requires Node.js and express to run... properly.  
+`npm install express`  
+Boot up the server with:  
+`node server.js`  
+Should be at `http://localhost:5860`  
+
+- **Alternatively, a Python server** (without all the BeamNG fun)  
+Navigate to root directory (`rikka_public`, where all the good HTML is)  
+and run: `python -m http.server [port]`,  
+boot up a browser and open up `http://localhost:[port]` and do everything.  
 
 - **Debugging with BeamNG**  
 I have no idea how to do that as of now.  

@@ -111,3 +111,15 @@ function changeAgentState(event) {
     changeAgentAnimation(shakingIntensity[emotion]);
   }
 }
+
+/* MAIN BLOODY LOOP */
+/* It's dangerous don't use it yet */
+
+function mainLoop(){
+  let audioElement = document.getElementById('agentAudio');
+  if (audioElement.paused) {
+    
+  }
+}
+
+// setInterval(mainLoop, 1000);
