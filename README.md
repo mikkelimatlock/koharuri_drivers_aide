@@ -23,7 +23,7 @@ Requires Node.js and npm packages `express` and `morgan` to run... properly.
 BeamNG OutGauge requires `dgram` for... something.  
 `npm install dgram`  
 Communication between frontend/backend requires some WebSocket.  
-`npm install ws`
+`npm install ws`  
 Boot up the server with:  
 `node server.js`  
 Should be at `http://localhost:5860`  
