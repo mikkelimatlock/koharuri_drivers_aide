@@ -5,8 +5,9 @@ const wsPort = 5861;
 
 // GLOBALs
 var default_state = 'default';
-var current_mentality = 1; // positive for happier, negative for more worried.
+var current_state = 'default';
 // not really used now
+var current_mentality = 1; // positive for happier, negative for more worried.
 var speed_limit = 60; // km/h
 
 function isValidJSON(str) {
@@ -95,6 +96,8 @@ function voiceRandomiser(event) {
     'angry': ['angry1.wav'],
     'speeding': ['speeding1.wav', 'speeding2.wav'],
     'praise': ['praise1.wav'],
+    'right_side': ['right_side1.wav'],
+    'speed_limit_change': ['speed_limit_change1.wav'],
   }; 
   //
   /* Default state does not have voices */
@@ -152,6 +155,7 @@ function changeAgentAudio(event) {
 
 function resetAgentState() { // to default
   console.log("resetting agent state to default");
+  current_state = default_state
   changeAgentPortrait(default_state);
   changeAgentAudio('default');
   changeAgentAnimation('none');
@@ -167,12 +171,15 @@ function changeAgentState(event) {
     'speeding': 'worried',
     'praise': 'glad',
     'hard_brake': 'angry',
+    'right_side': 'glad',
+    'speed_limit_change': 'default2',
   }
   /* animations and fixing the div element */ 
   const shakingIntensity = {
     'angry': 'heavy',
     'worried': 'medium',
-    'glad': 'light'
+    'glad': 'light',
+    'right_side': 'light',
   };
   
   emotion = emotionByEvent[event];
@@ -181,22 +188,32 @@ function changeAgentState(event) {
     resetAgentState();
   }
   else {
+    current_state = event;
     changeAgentPortrait(emotion);
     changeAgentAudio(event);
     changeAgentAnimation(shakingIntensity[emotion]);
   }
 }
 
-const throttledChangeAgentState = throttle(changeAgentState, 10000);
+const throttledChangeAgentState = throttle(changeAgentState, 4000);
 
-/* MAIN BLOODY LOOP */
-/* It's dangerous don't use it yet */
+// timed right hand traffic promt
+const rhtPromptInterval = 40000; // 40 seconds
+const rhtPromptDelay = 500; // 0.5 seconds
 
-function mainLoop(){
-  let audioElement = document.getElementById('agentAudio');
+let isRhtPromptQueued = false;
+
+setInterval(() => {
+  const audioElement = document.getElementById('agentAudio');
+
   if (audioElement.paused) {
-    
+    if (isRhtPromptQueued) {
+      isRhtPromptQueued = false;
+    } else {
+      changeAgentState('right_side');
+    }
+  } else if (!isRhtPromptQueued) {
+    setTimeout(changeAgentState('right_side'), rhtPromptDelay);
+    isRhtPromptQueued = true;
   }
-}
-
-// setInterval(mainLoop, 1000);
+}, rhtPromptInterval);
