@@ -1,9 +1,78 @@
 // agent_actions.js
 
+const httpPort = 5860; // Kind of sounds like koharu rikka, I guess
+const wsPort = 5861;
+
 // GLOBALs
 var default_state = 'default';
 var current_mentality = 1; // positive for happier, negative for more worried.
 // not really used now
+var speed_limit = 60; // km/h
+
+function isValidJSON(str) {
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
+// WebSocket
+const socket = new WebSocket(`ws://localhost:${wsPort}`); 
+socket.addEventListener('message', function (event) {
+  if (isValidJSON(event.data)) {
+    const outGaugeData = JSON.parse(event.data); // This is the data from OutGauge, broadcast by WS server
+    console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
+    processData(outGaugeData);
+  }
+  else {
+    console.log(event.data);
+  }
+});
+
+let debounceTimer;
+function debounce(func, wait){
+  return function(...args) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      func.apply(this, args);
+    }, wait);
+  };
+}
+
+// throttling function from somewhere prolly stolen and amalgated by Copilot
+function throttle(func, limit) {
+  let lastFunc;
+  let lastRan;
+  return function() {
+    const context = this;
+    const args = arguments;
+    if (!lastRan) {
+      func.apply(context, args);
+      lastRan = Date.now();
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(function() {
+        if ((Date.now() - lastRan) >= limit) {
+          func.apply(context, args);
+          lastRan = Date.now();
+        }
+      }, limit - (Date.now() - lastRan));
+    }
+  }
+}
+
+function processData(outGaugeData) {
+  let audioElement = document.getElementById('agentAudio');
+  if (audioElement.paused) {
+    if (outGaugeData.speed > speed_limit) {
+      throttledChangeAgentState('speeding');
+    }
+  }
+}
+const debouncedProcessData = debounce(processData, 1000);
+
 
 /* testing triggers. delete / comment when integrating with anything more useful */
 document.addEventListener('keydown', function(event) {
@@ -74,10 +143,18 @@ function changeAgentAudio(event) {
     audioPath = voiceRandomiser(event);
     agentAudio.src = audioPath;
     agentAudio.onended = function(){
-      changeAgentState('default');
+      resetAgentState();
     }
     agentAudio.play();
   }
+}
+
+
+function resetAgentState() { // to default
+  console.log("resetting agent state to default");
+  changeAgentPortrait(default_state);
+  changeAgentAudio('default');
+  changeAgentAnimation('none');
 }
 
 function changeAgentState(event) {
@@ -99,11 +176,9 @@ function changeAgentState(event) {
   };
   
   emotion = emotionByEvent[event];
- 
+
   if (event === 'default') {
-    changeAgentPortrait(default_state);
-    changeAgentAudio('default');
-    changeAgentAnimation('none');
+    resetAgentState();
   }
   else {
     changeAgentPortrait(emotion);
@@ -111,6 +186,8 @@ function changeAgentState(event) {
     changeAgentAnimation(shakingIntensity[emotion]);
   }
 }
+
+const throttledChangeAgentState = throttle(changeAgentState, 10000);
 
 /* MAIN BLOODY LOOP */
 /* It's dangerous don't use it yet */
