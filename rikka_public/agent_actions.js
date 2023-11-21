@@ -10,6 +10,8 @@ var current_state = 'default';
 var current_mentality = 1; // positive for happier, negative for more worried.
 var speed_limit = 60; // km/h
 
+
+
 function isValidJSON(str) {
   try {
     JSON.parse(str);
@@ -75,20 +77,7 @@ function processData(outGaugeData) {
 const debouncedProcessData = debounce(processData, 1000);
 
 
-/* testing triggers. delete / comment when integrating with anything more useful */
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'a') { // Replace with appropriate trigger
-      console.log("speeding event triggered");
-      changeAgentState('speeding')
-    }
-    if (event.key === 'd') {
-      changeAgentState('praise')
-    }
-    if (event.key === 's') {
-      changeAgentState('default')
-    }
-    // Add more conditions as needed
-});
+
 
 function voiceRandomiser(event) {
   /* List of available voices for each type of content */
@@ -202,18 +191,44 @@ const rhtPromptInterval = 40000; // 40 seconds
 const rhtPromptDelay = 500; // 0.5 seconds
 
 let isRhtPromptQueued = false;
+let isRhtPromptEnabled = false;
 
 setInterval(() => {
   const audioElement = document.getElementById('agentAudio');
 
-  if (audioElement.paused) {
-    if (isRhtPromptQueued) {
-      isRhtPromptQueued = false;
+  if (isRhtPromptEnabled) {
+    if (audioElement.paused) {
+      // if it's not playing
+      if (isRhtPromptQueued) {
+        isRhtPromptQueued = false;
+      } else {
+        changeAgentState('right_side');
+      } 
     } else {
-      changeAgentState('right_side');
+      if (!isRhtPromptQueued) {
+        setTimeout(changeAgentState('right_side'), rhtPromptDelay);
+        isRhtPromptQueued = true;
+      }
     }
-  } else if (!isRhtPromptQueued) {
-    setTimeout(changeAgentState('right_side'), rhtPromptDelay);
-    isRhtPromptQueued = true;
   }
 }, rhtPromptInterval);
+
+
+/* testing triggers. delete / comment when integrating with anything more useful */
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'a') { // Replace with appropriate trigger
+    console.log("speeding event triggered");
+    changeAgentState('speeding')
+  }
+  if (event.key === 'd') {
+    changeAgentState('praise')
+  }
+  if (event.key === 's') {
+    changeAgentState('default')
+  }
+  if (event.key === 'f') {
+    isRhtPromptEnabled = !isRhtPromptEnabled;
+    console.log(`Right hand traffic prompt is ${isRhtPromptEnabled ? 'enabled' : 'disabled'}`);
+  }
+  // Add more conditions as needed
+});
