@@ -27,6 +27,11 @@ Communication between frontend/backend requires some WebSocket.
 Boot up the server with:  
 `node server.js`  
 Should be at `http://localhost:5860`  
+*Sometimes Windows excludes ports for some reason, free ports by running:*  
+`net stop winnat`  
+`net start winnat`  
+*Check port exclusion with the following command:*  
+`netsh interface ipv4 show excludedportrange protocol=tcp`  
 
 - **Alternatively, a Python server** (without all the BeamNG fun)  
 Navigate to root directory (`rikka_public`, where all the good HTML is)  

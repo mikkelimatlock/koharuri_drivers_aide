@@ -87,7 +87,7 @@ function logClients(){
   });
 }
 
-// throttling function from somewhere prolly stolen and amalgated by Copilot
+// throttling function from somewhere probably stolen and amalgated by Copilot
 function throttle(func, limit) {
   let lastFunc;
   let lastRan;
