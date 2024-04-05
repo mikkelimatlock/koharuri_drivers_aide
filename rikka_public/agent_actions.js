@@ -11,7 +11,6 @@ var current_mentality = 1; // positive for happier, negative for more worried.
 var speed_limit = 60; // km/h
 
 
-
 function isValidJSON(str) {
   try {
     JSON.parse(str);
@@ -36,7 +35,14 @@ socket.addEventListener('message', function (event) {
     }
     if (receivedData.type === 'speedLimitUpdate') {
       console.log(`Speed limit updated to ${receivedData.speedLimit} km/h`);
-      speed_limit = receivedData.speedLimit;
+      speed_limit = parseInt(receivedData.speedLimit, 10);
+      var speedLimitNumber = document.getElementById('speedLimitNumericalValue');
+      if (speedLimitNumber) {
+        speedLimitNumber.textContent = speed_limit;
+        console.log('Element found:', speedLimitNumber);
+      } else {
+        console.log('Element not found');
+      }
       changeAgentState('speed_limit_change');    
     }
   }
@@ -160,6 +166,11 @@ function resetAgentState() { // to default
   changeAgentPortrait(default_state);
   changeAgentAudio('default');
   changeAgentAnimation('none');
+}
+
+function changeAgentStateBackupTimer() {
+  // sometimes the webpage fails to play a sound, this is a backup timer to reset the agent state
+  
 }
 
 function changeAgentState(event) {

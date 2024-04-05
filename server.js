@@ -78,6 +78,14 @@ wss.on('connection', (ws) => {
     if(data.type === 'admin') {
       // Admin message
       console.log('Admin message: ', data.message);
+      if (data.action === 'speedLimitUpdate') {
+        console.log(`Speed limit updated to ${data.speedLimit} km/h`);
+        const speedLimitUpdatePacket = {
+          type: 'speedLimitUpdate',
+          speedLimit: data.speedLimit
+        }
+        broadcast(speedLimitUpdatePacket);
+      }
     } else if (data.type === 'agent') {
       // Agent message
       console.log('Agent message: ', data.message);
