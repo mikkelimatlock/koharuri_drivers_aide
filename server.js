@@ -77,8 +77,10 @@ wss.on('connection', (ws) => {
     const data = JSON.parse(message);
     if(data.type === 'admin') {
       // Admin message
+      console.log('Admin message: ', data.message);
     } else if (data.type === 'agent') {
       // Agent message
+      console.log('Agent message: ', data.message);
     }
     
   });
