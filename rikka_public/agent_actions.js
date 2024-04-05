@@ -23,11 +23,22 @@ function isValidJSON(str) {
 
 // WebSocket
 const socket = new WebSocket(`ws://localhost:${wsPort}`); 
+socket.onopen = () => {
+  socket.send(JSON.stringify({type: 'agent', message: 'connected'}));
+}
 socket.addEventListener('message', function (event) {
   if (isValidJSON(event.data)) {
-    const outGaugeData = JSON.parse(event.data); // This is the data from OutGauge, broadcast by WS server
-    console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
-    processData(outGaugeData);
+    const receivedData = JSON.parse(event.data);
+    if (receivedData.type === 'outGaugeData') {
+      const outGaugeData = receivedData;
+      console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
+      processData(outGaugeData);
+    }
+    if (receivedData.type === 'speedLimitUpdate') {
+      console.log(`Speed limit updated to ${receivedData.speedLimit} km/h`);
+      speed_limit = receivedData.speedLimit;
+      changeAgentState('speed_limit_change');    
+    }
   }
   else {
     console.log(event.data);
@@ -69,7 +80,8 @@ function throttle(func, limit) {
 function processData(outGaugeData) {
   let audioElement = document.getElementById('agentAudio');
   if (audioElement.paused) {
-    if (outGaugeData.speed > speed_limit) {
+    // if (outGaugeData.speed > speed_limit) {
+      if (outGaugeData.speed > (1.1 * speed_limit)) {
       throttledChangeAgentState('speeding');
     }
   }

@@ -15,6 +15,14 @@ const wsPort = 5861;
 // Use morgan to log HTTP requests 
 app.use(morgan('dev'));
 
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/rikka_public/main.html');
+});
+
+app.get('/dashboard', (req, res) => {
+  res.sendFile(__dirname + '/rikka_public/dash/dash.html');
+});
+
 // Serve static files from 'rikka_public' directory
 app.use(express.static('rikka_public'));
 
@@ -63,6 +71,16 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     console.log('Client disconnected from WebSocket');
+  });
+
+  ws.on('message', (message) => {
+    const data = JSON.parse(message);
+    if(data.type === 'admin') {
+      // Admin message
+    } else if (data.type === 'agent') {
+      // Agent message
+    }
+    
   });
 
 });
@@ -134,6 +152,7 @@ function parseOutGaugeData(msg) {
   ];
   console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
   logClients();
+  outGaugeData.type = 'outGaugeData';
   broadcast(outGaugeData);
 }
 
