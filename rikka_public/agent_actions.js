@@ -23,46 +23,62 @@ function isValidJSON(str) {
 }
 
 // WebSocket
-const socket = new WebSocket(`ws://${wsHost}:${wsPort}`); 
-socket.onopen = () => {
-  socket.send(JSON.stringify({type: 'agent', message: 'connected'}));
-}
-socket.addEventListener('message', function (event) {
-  if (isValidJSON(event.data)) {
-    const receivedData = JSON.parse(event.data);
-    if (receivedData.type === 'outGaugeData') {
-      const outGaugeData = receivedData;
-      console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
-      var speedNumber = document.getElementById('speedNumericalValue');
-      if (speedNumber) {
-        speedNumber.textContent = outGaugeData.speed.toFixed(0);
-        // console.log('Element found:', speedNumber);
-      } else {
-        console.log('Element not found');
-      }
-      var tachoNumber = document.getElementById('tachoNumericalValue');
-      if (tachoNumber) {
-        tachoNumber.textContent = outGaugeData.rpm.toFixed(0);
-      } else {
-        console.log('Element not found');
-      }
-      processData(outGaugeData);
+var socket;
+var isConnected = false;
+
+document.getElementById('wsButton').addEventListener('click', function() {
+  if (isConnected) {
+    socket.close();
+  } else {
+    socket = new WebSocket(`ws://${wsHost}:${wsPort}`);
+    socket.onopen = () => {
+      socket.send(JSON.stringify({type: 'agent', message: 'connected'}));
+      isConnected = true;
+      document.getElementById('wsButton').innerText = 'Disconnect';
+      // Todo: add an agent action prompting that connection is established
     }
-    if (receivedData.type === 'speedLimitUpdate') {
-      console.log(`Speed limit updated to ${receivedData.speedLimit} km/h`);
-      speed_limit = parseInt(receivedData.speedLimit, 10);
-      var speedLimitNumber = document.getElementById('speedLimitNumericalValue');
-      if (speedLimitNumber) {
-        speedLimitNumber.textContent = speed_limit;
-        // console.log('Element found:', speedLimitNumber);
-      } else {
-        console.log('Element not found');
-      }
-      changeAgentState('speed_limit_change');    
+    socket.onclose = () => {
+      isConnected = false;
+      document.getElementById('wsButton').innerText = 'Connect';
     }
-  }
-  else {
-    console.log(event.data);
+    socket.addEventListener('message', function (event) {
+      if (isValidJSON(event.data)) {
+        const receivedData = JSON.parse(event.data);
+        if (receivedData.type === 'outGaugeData') {
+          const outGaugeData = receivedData;
+          console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
+          var speedNumber = document.getElementById('speedNumericalValue');
+          if (speedNumber) {
+            speedNumber.textContent = outGaugeData.speed.toFixed(0);
+            // console.log('Element found:', speedNumber);
+          } else {
+            console.log('Element not found');
+          }
+          var tachoNumber = document.getElementById('tachoNumericalValue');
+          if (tachoNumber) {
+            tachoNumber.textContent = outGaugeData.rpm.toFixed(0);
+          } else {
+            console.log('Element not found');
+          }
+          processData(outGaugeData);
+        }
+        if (receivedData.type === 'speedLimitUpdate') {
+          console.log(`Speed limit updated to ${receivedData.speedLimit} km/h`);
+          speed_limit = parseInt(receivedData.speedLimit, 10);
+          var speedLimitNumber = document.getElementById('speedLimitNumericalValue');
+          if (speedLimitNumber) {
+            speedLimitNumber.textContent = speed_limit;
+            // console.log('Element found:', speedLimitNumber);
+          } else {
+            console.log('Element not found');
+          }
+          changeAgentState('speed_limit_change');    
+        }
+      }
+      else {
+        console.log(event.data);
+      }
+    });
   }
 });
 

@@ -106,7 +106,7 @@ body {
   height: 100%;
 }
 
-#agentPortrait, #svgSpeedLimit, #svgSpeedoTachoMeter{
+#agentPortrait, #svgSpeedLimit, #svgSpeedoTachoMeter, #wsButton{
   position: absolute;
   object-fit: contain;
 }
@@ -138,4 +138,17 @@ body {
 #svgSpeedLimit, #svgSpeedoTachoMeter > svg {
   max-width: 100%;
   max-height: 100%;
+}
+
+#wsButton {
+  bottom: 1%;
+  left: 1%;
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #ddd;
+  background-color: #585777;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
