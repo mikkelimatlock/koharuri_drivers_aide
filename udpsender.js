@@ -2,6 +2,14 @@ const dgram = require('dgram');
 const client = dgram.createSocket('udp4');
 const beamngPort = 4444;
 
+const args = process.argv.slice(2);
+let targetHost = 'localhost'; // Default host
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '-h' && i + 1 < args.length) {
+    targetHost = args[i + 1];
+  }
+}
+
 // Replace these with your actual data
 const outGaugeData = {
   time: 0,
@@ -9,8 +17,8 @@ const outGaugeData = {
   flags: 0,
   gear: 'N',
   playerId: '0',
-  speed: 0,
-  rpm: 0,
+  speed: 2,
+  rpm: 750,
   turbo: 0,
   engTemp: 0,
   fuel: 0,
@@ -45,6 +53,6 @@ buffer.writeFloatLE(outGaugeData.clutch, 56);
 buffer.write(outGaugeData.display[0], 60, 'ascii');
 buffer.write(outGaugeData.display[1], 76, 'ascii');
 
-client.send(buffer, beamngPort, 'localhost', (err) => {
+client.send(buffer, beamngPort, targetHost, (err) => {
   client.close();
 });
