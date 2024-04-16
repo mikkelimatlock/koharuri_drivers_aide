@@ -119,8 +119,7 @@ body {
 }
 
 #svgSpeedLimit, #svgSpeedoTachoMeter {
-  right: 5%;
-  width: 33%;
+  right: 2%;
   height: auto;
   display: flex;
   align-items: center;
@@ -128,11 +127,13 @@ body {
 }
 
 #svgSpeedLimit {
-  top: 30%;
+  top: 28%;
+  width: 33%;
 }
 
 #svgSpeedoTachoMeter {
-  top: 65%;
+  top: 59%;
+  width: 40%;
 }
 
 #svgSpeedLimit, #svgSpeedoTachoMeter > svg {
