@@ -39,7 +39,7 @@ and run: `python -m http.server [port]`,
 boot up a browser and open up `http://localhost:[port]` and do everything.  
 
 - **Debugging with BeamNG**  
-I have no idea how to do that as of now.  
+Try using WireShark (and npcap under Windows). Probably this will help. I'm not sure.  
 
 ## Stuff borrowed
 [Alte DIN 1451 Mittelschrift](https://fonts2u.com/alte-din-1451-mittelschrift.font) - for speed limit numbers.  
