@@ -10,7 +10,7 @@ var default_state = 'default';
 var current_state = 'default';
 // not really used now
 var current_mentality = 1; // positive for happier, negative for more worried.
-var speed_limit = 60; // km/h
+var speed_limit = 30; // km/h
 
 
 function isValidJSON(str) {
@@ -50,6 +50,14 @@ document.getElementById('wsButton').addEventListener('click', function() {
       socket.send(JSON.stringify({type: 'agent', message: 'connected'}));
       isConnected = true;
       document.getElementById('wsButton').innerText = 'Disconnect';
+      // initialise speed limit
+      var speedLimitNumber = document.getElementById('speedLimitNumericalValue');
+      if (speedLimitNumber) {
+        speedLimitNumber.textContent = speed_limit;
+        // console.log('Element found:', speedLimitNumber);
+      } else {
+        console.log('Element not found');
+      }
       // Todo: add an agent action prompting that connection is established
     }
     socket.onclose = () => {
@@ -66,6 +74,14 @@ document.getElementById('wsButton').addEventListener('click', function() {
           var speedNumber = document.getElementById('speedNumericalValue');
           if (speedNumber) {
             speedNumber.textContent = outGaugeData.speed.toFixed(0);
+            // comment this out when experimenting with speed limit
+            if (outGaugeData.speed > speed_limit) {
+              speedNumber.setAttribute('fill', '#ff4040');
+              speedNumber.setAttribute('stroke', '#c71010');
+            } else {
+              speedNumber.setAttribute('fill', '#fff');
+              speedNumber.setAttribute('stroke', '#d6d8d9');
+            }
             // console.log('Element found:', speedNumber);
           } else {
             console.log('Element not found');
@@ -73,6 +89,14 @@ document.getElementById('wsButton').addEventListener('click', function() {
           var tachoNumber = document.getElementById('tachoNumericalValue');
           if (tachoNumber) {
             tachoNumber.textContent = outGaugeData.rpm.toFixed(0);
+            if (outGaugeData.rpm > 6000) {
+              tachoNumber.setAttribute('fill', '#ff4040');
+              tachoNumber.setAttribute('stroke', '#c71010');
+              // todo: over rev agent action
+            } else {
+              tachoNumber.setAttribute('fill', '#fff');
+              tachoNumber.setAttribute('stroke', '#d6d8d9');
+            }
           } else {
             console.log('Element not found');
           }
