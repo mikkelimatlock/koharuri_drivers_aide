@@ -1,4 +1,5 @@
 const wsPort = 5861;
+const wsHost = location.hostname;
 
 function isValidJSON(str) {
   try {
@@ -10,7 +11,7 @@ function isValidJSON(str) {
 }
 
 // WebSocket
-const socket = new WebSocket(`ws://localhost:${wsPort}`); 
+const socket = new WebSocket(`ws://${wsHost}:${wsPort}`); 
 socket.onopen = () => {
   socket.send(JSON.stringify({type: 'admin', message: 'connected'}));
 }

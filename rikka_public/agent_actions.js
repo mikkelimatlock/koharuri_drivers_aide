@@ -2,6 +2,8 @@
 
 const httpPort = 5860; // Kind of sounds like koharu rikka, I guess
 const wsPort = 5861;
+// const wsHost = "127.0.0.1";
+const wsHost = location.hostname;
 
 // GLOBALs
 var default_state = 'default';
@@ -21,7 +23,7 @@ function isValidJSON(str) {
 }
 
 // WebSocket
-const socket = new WebSocket(`ws://localhost:${wsPort}`); 
+const socket = new WebSocket(`ws://${wsHost}:${wsPort}`); 
 socket.onopen = () => {
   socket.send(JSON.stringify({type: 'agent', message: 'connected'}));
 }
