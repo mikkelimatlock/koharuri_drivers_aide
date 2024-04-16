@@ -26,6 +26,21 @@ function isValidJSON(str) {
 var socket;
 var isConnected = false;
 
+function gearIndexToText(gearNum) {
+  var automatic = true;
+  if (gearNum === 0) {
+    return 'R';
+  } else if (gearNum === 1) {
+    return 'N';
+  } else {
+    if (automatic) {
+      return 'D';
+    } else{
+      return gearNum - 1;
+    }
+  }
+}
+
 document.getElementById('wsButton').addEventListener('click', function() {
   if (isConnected) {
     socket.close();
@@ -47,6 +62,7 @@ document.getElementById('wsButton').addEventListener('click', function() {
         if (receivedData.type === 'outGaugeData') {
           const outGaugeData = receivedData;
           console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
+          console.log(`Gear: ${gearIndexToText(outGaugeData.gear)}, RPM: ${outGaugeData.rpm.toFixed(0)}`);
           var speedNumber = document.getElementById('speedNumericalValue');
           if (speedNumber) {
             speedNumber.textContent = outGaugeData.speed.toFixed(0);
@@ -60,7 +76,13 @@ document.getElementById('wsButton').addEventListener('click', function() {
           } else {
             console.log('Element not found');
           }
-          processData(outGaugeData);
+          var gearChar = document.getElementById('gearCharValue');
+          if (gearChar) {
+            gearChar.textContent = gearIndexToText(outGaugeData.gear);
+          } else {
+            console.log('Element not found');
+          }
+          debouncedProcessData(outGaugeData);
         }
         if (receivedData.type === 'speedLimitUpdate') {
           console.log(`Speed limit updated to ${receivedData.speedLimit} km/h`);
@@ -123,7 +145,7 @@ function processData(outGaugeData) {
     }
   }
 }
-const debouncedProcessData = debounce(processData, 1000);
+const debouncedProcessData = debounce(processData, 400);
 
 
 
@@ -238,7 +260,7 @@ function changeAgentState(event) {
   }
 }
 
-const throttledChangeAgentState = throttle(changeAgentState, 4000);
+const throttledChangeAgentState = throttle(changeAgentState, 5000);
 
 // timed right hand traffic promt
 const rhtPromptInterval = 40000; // 40 seconds

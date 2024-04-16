@@ -141,7 +141,8 @@ function parseOutGaugeData(msg) {
   outGaugeData.time = msg.readUInt32LE(0);
   outGaugeData.carName = msg.toString('ascii', 4, 8);
   outGaugeData.flags = msg.readUInt16LE(8);
-  outGaugeData.gear = String.fromCharCode(msg[10]);
+  // outGaugeData.gear = String.fromCharCode(msg[10]);
+  outGaugeData.gear = msg[10];
   outGaugeData.playerId = String.fromCharCode(msg[11]);
   outGaugeData.speed = msg.readFloatLE(12) * 3.6;
   outGaugeData.rpm = msg.readFloatLE(16);
