@@ -196,7 +196,7 @@ function startUdpServer() {
   });
 
   // Bind UDP server to the appropriate port
-  udpServer.bind(beamngPort);
+  udpServer.bind(beamngPort, '0.0.0.0');
 }
 
 startUdpServer();
