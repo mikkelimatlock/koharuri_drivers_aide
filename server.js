@@ -160,7 +160,7 @@ function parseOutGaugeData(msg) {
     msg.toString('ascii', 60, 76),
     msg.toString('ascii', 76, 92)
   ];
-  console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
+  // console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
   logClients();
   outGaugeData.type = 'outGaugeData';
   broadcast(outGaugeData);

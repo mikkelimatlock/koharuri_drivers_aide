@@ -33,6 +33,19 @@ socket.addEventListener('message', function (event) {
     if (receivedData.type === 'outGaugeData') {
       const outGaugeData = receivedData;
       console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
+      var speedNumber = document.getElementById('speedNumericalValue');
+      if (speedNumber) {
+        speedNumber.textContent = outGaugeData.speed.toFixed(0);
+        // console.log('Element found:', speedNumber);
+      } else {
+        console.log('Element not found');
+      }
+      var tachoNumber = document.getElementById('tachoNumericalValue');
+      if (tachoNumber) {
+        tachoNumber.textContent = outGaugeData.rpm.toFixed(0);
+      } else {
+        console.log('Element not found');
+      }
       processData(outGaugeData);
     }
     if (receivedData.type === 'speedLimitUpdate') {
@@ -41,7 +54,7 @@ socket.addEventListener('message', function (event) {
       var speedLimitNumber = document.getElementById('speedLimitNumericalValue');
       if (speedLimitNumber) {
         speedLimitNumber.textContent = speed_limit;
-        console.log('Element found:', speedLimitNumber);
+        // console.log('Element found:', speedLimitNumber);
       } else {
         console.log('Element not found');
       }
