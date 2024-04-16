@@ -17,7 +17,7 @@ const outGaugeData = {
   flags: 0,
   gear: 'N',
   playerId: '0',
-  speed: 2,
+  speed: 6,
   rpm: 750,
   turbo: 0,
   engTemp: 0,
