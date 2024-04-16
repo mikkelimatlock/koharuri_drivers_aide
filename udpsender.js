@@ -4,7 +4,7 @@ const client = dgram.createSocket('udp4');
 // Replace these with your actual data
 let outGaugeData = {
   time: 0,
-  carName: 'Test',
+  carName: 'test',
   flags: 0,
   gear: 'N',
   playerId: '0',
