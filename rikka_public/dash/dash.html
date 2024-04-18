@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Button Layout</title>
-    <style>
-        .button-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        .button-row button {
-            width: 45%;
-        }
-    </style>
+    <title>Rikka Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="dash/dash.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="button-row">
-        <button id="button_60kph">Set to 60</button>
-        <button id="button_80kph">Set to 80</button>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="/dash/dash.js"></script>
+    <script>
+        $( function() {
+            $( ".draggable-block" ).draggable();
+        } );
+    </script>
+    <div class="button-row draggable-block">
+        
+        <button id="button_60kph" class="btn btn-primary btn-block">Set to 60</button>
+        <button id="button_80kph" class="btn btn-primary btn-block">Set to 80</button>
     </div>
-    <div class="button-row">
+    <div class="button-row draggable-block">
         <button>Button 3</button>
         <button>Button 4</button>
     </div>
-    <div class="button-row">
+    <div class="button-row draggable-block">
         <button>Button 5</button>
         <button>Button 6</button>
     </div>
-    <script src="/dash/dash.js"></script>
 </body>
 </html>

@@ -41,6 +41,7 @@ function gearIndexToText(gearNum) {
   }
 }
 
+// Button for initiating / terminating connection with WebSocket sever
 document.getElementById('wsButton').addEventListener('click', function() {
   if (isConnected) {
     socket.close();
@@ -164,15 +165,14 @@ function processData(outGaugeData) {
   let audioElement = document.getElementById('agentAudio');
   if (audioElement.paused) {
     // if (outGaugeData.speed > speed_limit) {
-      if (outGaugeData.speed > (1.1 * speed_limit)) {
+    if (outGaugeData.speed > (1.1 * speed_limit)) {
+      let throttledChangeAgentState = throttle(changeAgentState, 10000);
       throttledChangeAgentState('speeding');
     }
   }
 }
+
 const debouncedProcessData = debounce(processData, 400);
-
-
-
 
 function voiceRandomiser(event) {
   /* List of available voices for each type of content */
@@ -284,7 +284,7 @@ function changeAgentState(event) {
   }
 }
 
-const throttledChangeAgentState = throttle(changeAgentState, 5000);
+// const throttledChangeAgentState = throttle(changeAgentState, 5000);
 
 // timed right hand traffic promt
 const rhtPromptInterval = 40000; // 40 seconds

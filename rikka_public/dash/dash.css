@@ -1,0 +1,21 @@
+.button-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.button-row button {
+  width: 45%;
+}
+
+.draggable-block {
+  max-width: 40vw;
+  /* max-height: 50vh; */
+  width: 40%;
+  height: fit-content;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  background-color: #e3cee1;
+  cursor: move;
+}
