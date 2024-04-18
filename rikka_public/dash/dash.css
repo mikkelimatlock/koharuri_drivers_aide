@@ -3,21 +3,37 @@
   src: url('../fonts/din1451alt.ttf') format('truetype');
 }
 
-.button-row {
+.button-grid {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 10px;
 }
 
+.button-grid-sub {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.flex-grid-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .btn {
   font-family: 'DIN-1451';
+  margin: 0.2em !important;
 }
 
 .btn-primary {
   background-color: #79507e !important;
-  border-color: #603d64 !important;
-  border-width: 0.02em !important;
+  border-width: 0.1em !important;
+  border-color: #79507e !important;
   padding: 0.7em !important;
   font-size: 1.2em !important;
 }

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="button-row draggable-block">
+    <div class="button-grid draggable-block">
         <h4>Speed limit</h4>
         <button id="button_30kph" class="btn btn-primary">Set to 30</button>
         <button id="button_40kph" class="btn btn-primary">Set to 40</button>
@@ -18,11 +18,20 @@
             <button id="button_custom_speed" class="btn btn-primary" style="width: 40;">Set to this</button>
         </div>
     </div>
-    <div class="button-row draggable-block">
-        <button>Button 3</button>
-        <button>Button 4</button>
+    <div class="button-grid draggable-block">
+        <h4>Navigation</h4>
+        <div class="flex-grid-row">
+            <div id="left_turn_prompts" class="button-grid-sub">
+                <button id="button_left_500m" class="btn btn-primary">Left turn in 500m</button>
+                <button id="button_left_turn" class="btn btn-primary">Turn left</button>
+            </div>
+            <div id="right_turn_prompts" class="button-grid-sub">
+                <button id="button_left_500m" class="btn btn-primary">Right turn in 500m</button>
+                <button id="button_right_turn" class="btn btn-primary">Turn right</button>
+            </div>     
+        </div>
     </div>
-    <div class="button-row draggable-block">
+    <div class="button-grid draggable-block">
         <button>Button 5</button>
         <button>Button 6</button>
     </div>
