@@ -11,7 +11,7 @@ var current_state = 'default';
 // not really used now
 var current_mentality = 1; // positive for happier, negative for more worried.
 var speed_limit = 30; // km/h
-const high_rev_limit = 6000;
+const high_rev_limit = 6100;
 
 // throttling function from somewhere prolly stolen and amalgated by Copilot
 
@@ -192,7 +192,7 @@ function processData(outGaugeData) {
       throttledChangeAgentState10('speeding');
     }
     // high rev warning
-    if (outGaugeData.rpm > (high_rev_limit + 150)) {
+    if (outGaugeData.rpm > (high_rev_limit + 250)) {
       throttledChangeAgentState10('high_rev');
     }
   }

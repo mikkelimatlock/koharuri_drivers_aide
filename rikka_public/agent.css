@@ -97,7 +97,7 @@ body {
 #agent:before {
   content: "";
   display: block;
-  padding-top: 94.32%; /* 2456 / 2604 * 100% */
+  padding-top: 94%; 
 }
 
 #agentPortraitAnchor{
@@ -115,7 +115,7 @@ body {
   top: 0;
   left: 0;
   max-height: 100%;
-  max-width: 100%;
+  /* max-width: 100%; */
 }
 
 #svgSpeedLimit, #svgSpeedoTachoMeter {

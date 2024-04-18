@@ -9,7 +9,7 @@ function adjustAgentSize() {
     agent.style.height = '88vh';
   } else {
     // Viewport is narrower than the aspect ratio, limit by width
-    agent.style.width = '88vw';
+    agent.style.width = '90vw';
     agent.style.height = 'auto';
   }
 }
