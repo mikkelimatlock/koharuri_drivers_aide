@@ -12,6 +12,41 @@ var current_state = 'default';
 var current_mentality = 1; // positive for happier, negative for more worried.
 var speed_limit = 30; // km/h
 
+// throttling function from somewhere prolly stolen and amalgated by Copilot
+
+// tooo complex version
+// function throttle(func, limit) {
+//   let lastFunc;
+//   let lastRan;
+//   return function() {
+//     const context = this;
+//     const args = arguments;
+//     if (!lastRan) {
+//       func.apply(context, args);
+//       lastRan = Date.now();
+//     } else {
+//       clearTimeout(lastFunc);
+//       lastFunc = setTimeout(function() {
+//         if ((Date.now() - lastRan) >= limit) {
+//           func.apply(context, args);
+//           lastRan = Date.now();
+//         }
+//       }, limit - (Date.now() - lastRan));
+//     }
+//   }
+// }
+
+function throttle(func, limit) {
+  let lastRan;
+  return function() {
+    const context = this;
+    const args = arguments;
+    if (!lastRan || (Date.now() - lastRan) >= limit) {
+      func.apply(context, args);
+      lastRan = Date.now();
+    }
+  }
+}
 
 function isValidJSON(str) {
   try {
@@ -25,6 +60,7 @@ function isValidJSON(str) {
 // WebSocket
 var socket;
 var isConnected = false;
+const _VERBOSE_ALERT = false;
 
 function gearIndexToText(gearNum) {
   var automatic = true;
@@ -63,6 +99,9 @@ document.getElementById('wsButton').addEventListener('click', function() {
     }
     socket.onclose = () => {
       isConnected = false;
+      if (_VERBOSE_ALERT) {
+        alert('Connection to WebSocket server closed');
+      }
       document.getElementById('wsButton').innerText = 'Connect';
     }
     socket.addEventListener('message', function (event) {
@@ -76,7 +115,7 @@ document.getElementById('wsButton').addEventListener('click', function() {
           if (speedNumber) {
             speedNumber.textContent = outGaugeData.speed.toFixed(0);
             // comment this out when experimenting with speed limit
-            if (outGaugeData.speed > speed_limit) {
+            if (parseInt(outGaugeData.speed) > speed_limit) {
               speedNumber.setAttribute('fill', '#ff4040');
               speedNumber.setAttribute('stroke', '#c71010');
             } else {
@@ -139,35 +178,16 @@ function debounce(func, wait){
   };
 }
 
-// throttling function from somewhere prolly stolen and amalgated by Copilot
-function throttle(func, limit) {
-  let lastFunc;
-  let lastRan;
-  return function() {
-    const context = this;
-    const args = arguments;
-    if (!lastRan) {
-      func.apply(context, args);
-      lastRan = Date.now();
-    } else {
-      clearTimeout(lastFunc);
-      lastFunc = setTimeout(function() {
-        if ((Date.now() - lastRan) >= limit) {
-          func.apply(context, args);
-          lastRan = Date.now();
-        }
-      }, limit - (Date.now() - lastRan));
-    }
-  }
-}
+
+let throttledChangeAgentState10 = throttle(changeAgentState, 10000);
 
 function processData(outGaugeData) {
   let audioElement = document.getElementById('agentAudio');
   if (audioElement.paused) {
     // if (outGaugeData.speed > speed_limit) {
     if (outGaugeData.speed > (1.1 * speed_limit)) {
-      let throttledChangeAgentState = throttle(changeAgentState, 10000);
-      throttledChangeAgentState('speeding');
+      
+      throttledChangeAgentState10('speeding');
     }
   }
 }
@@ -182,6 +202,7 @@ function voiceRandomiser(event) {
     'praise': ['praise1.wav'],
     'right_side': ['right_side1.wav'],
     'speed_limit_change': ['speed_limit_change1.wav'],
+    'high_rev': ['high_rev1.wav'],
   }; 
   //
   /* Default state does not have voices */
@@ -203,12 +224,21 @@ function changeAgentAnimation(intensity) {
   let agentPortrait = document.getElementById('agentPortrait')
   switch(intensity) {
     case 'light':
+      agentPortrait.classList.remove('shaking_light');
+      agentPortrait.classList.remove('shaking_medium');
+      agentPortrait.classList.remove('shaking_heavy');
       agentPortrait.classList.add('shaking_light');
       break;
     case 'heavy':
+      agentPortrait.classList.remove('shaking_light');
+      agentPortrait.classList.remove('shaking_medium');
+      agentPortrait.classList.remove('shaking_heavy');
       agentPortrait.classList.add('shaking_heavy');
       break;
     case 'medium':
+      agentPortrait.classList.remove('shaking_light');
+      agentPortrait.classList.remove('shaking_medium');
+      agentPortrait.classList.remove('shaking_heavy');
       agentPortrait.classList.add('shaking_medium');
       break;
     case 'none':

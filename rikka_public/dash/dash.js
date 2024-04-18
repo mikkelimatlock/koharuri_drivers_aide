@@ -19,9 +19,9 @@ socket.addEventListener('message', function (event) {
   if (isValidJSON(event.data)) {
     const receivedData = JSON.parse(event.data);
     if (receivedData.type === 'outGaugeData') {
-      const outGaugeData = receivedData;
-      console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
-      processData(outGaugeData);
+      // const outGaugeData = receivedData;
+      // console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
+      // processData(outGaugeData);
     }
     // if (receivedData.type === 'speedLimitUpdate') {
     //   console.log(`Speed limit updated to ${receivedData.speedLimit} km/h`);

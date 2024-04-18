@@ -67,6 +67,7 @@ const wss = new Server({ port: wsPort });
 
 wss.on('connection', (ws) => {
   console.log('Client connected to WebSocket');
+  logClients(veorbose=true);
   ws.send('Successfully connected to WebSocket server');
 
   ws.on('close', () => {
@@ -84,7 +85,7 @@ wss.on('connection', (ws) => {
           type: 'speedLimitUpdate',
           speedLimit: data.speedLimit
         }
-        broadcast(speedLimitUpdatePacket);
+        broadcast(speedLimitUpdatePacket, verbose=true);
       }
     } else if (data.type === 'agent') {
       // Agent message
@@ -99,20 +100,24 @@ wss.on('error', (error) => {
   console.log('WebSocket error: ', error);
 });
 
-function broadcast(data){
+function broadcast(data, verbose=false){
   wss.clients.forEach((client) => {
     if (client.readyState == 1) {
       client.send(JSON.stringify(data));
-      console.log(`Sent data to client ${client._socket.remoteAddress}:${client._socket.remotePort}`);
+      if (verbose) {
+        console.log(`Sent data to client ${client._socket.remoteAddress}:${client._socket.remotePort}`);
+      }
     }
   });
 }
 
-function logClients(){
-  console.log(`Number of connected clients: ${wss.clients.size}`);
-  wss.clients.forEach((client, index) => {
-    console.log(`Client ${index + 1} readyState: ${client.readyState}`);
-  });
+function logClients(verbose=false){
+  if (verbose) {
+    console.log(`Number of connected clients: ${wss.clients.size}`);
+    wss.clients.forEach((client, index) => {
+      console.log(`Client ${index + 1} at ${client._socket.remoteAddress} readyState: ${client.readyState}`);
+    });
+  }
 }
 
 // throttling function from somewhere probably stolen and amalgated by Copilot
