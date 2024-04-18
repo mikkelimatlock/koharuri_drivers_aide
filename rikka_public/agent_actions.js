@@ -200,9 +200,13 @@ function voiceRandomiser(event) {
     'angry': ['angry1.wav'],
     'speeding': ['speeding1.wav', 'speeding2.wav'],
     'praise': ['praise1.wav'],
-    'right_side': ['right_side1.wav'],
+    // 'right_side': ['right_side1.wav'],
     'speed_limit_change': ['speed_limit_change1.wav'],
     'high_rev': ['high_rev1.wav'],
+    'turn_left': ['turn_left1.wav'],
+    'turn_right': ['turn_right1.wav'],
+    'turn_500m_left': ['turn_500m_left1.wav'],
+    'turn_500m_right': ['turn_500m_right1.wav'],
   }; 
   //
   /* Default state does not have voices */
@@ -249,7 +253,7 @@ function changeAgentAnimation(intensity) {
   }
 }
 
-function changeAgentAudio(event) {
+function changeAgentAudio(event, turn_direction=null) {
   let agentAudio = document.getElementById('agentAudio');
   if (event === 'default') {
     agentAudio.src = '';
@@ -257,6 +261,9 @@ function changeAgentAudio(event) {
     return;
   }
   else {
+    if ((event == "turn" || event == "turn_500m" && turn_direction != null) {
+      event = event + "_" + turn_direction;
+    }
     audioPath = voiceRandomiser(event);
     agentAudio.src = audioPath;
     agentAudio.onended = function(){
@@ -280,7 +287,7 @@ function changeAgentStateBackupTimer() {
   
 }
 
-function changeAgentState(event) {
+function changeAgentState(event, turn_direction=null) {
   console.log("changing agent state to " + event);
   let agent = document.getElementById('agent');
   agent.dataset.currentevent = event;
@@ -292,6 +299,7 @@ function changeAgentState(event) {
     'hard_brake': 'angry',
     'right_side': 'glad',
     'speed_limit_change': 'default2',
+    'turn': 'default2',
   }
   /* animations and fixing the div element */ 
   const shakingIntensity = {
@@ -309,7 +317,7 @@ function changeAgentState(event) {
   else {
     current_state = event;
     changeAgentPortrait(emotion);
-    changeAgentAudio(event);
+    changeAgentAudio(event, turn_direction);
     changeAgentAnimation(shakingIntensity[emotion]);
   }
 }
