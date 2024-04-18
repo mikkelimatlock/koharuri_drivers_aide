@@ -33,20 +33,47 @@ socket.addEventListener('message', function (event) {
   }
 });
 
+button_30 = document.getElementById('button_30kph');
+button_40 = document.getElementById('button_40kph');
+button_50 = document.getElementById('button_50kph');
 button_60 = document.getElementById('button_60kph');
 button_80 = document.getElementById('button_80kph');
+button_custom_speed = document.getElementById('button_custom_speed');
 
-button_60.addEventListener('click', function() {
+function setSpeedLimit(speedLimit) {
   socket.send(JSON.stringify({
     type: 'admin',
     action: 'speedLimitUpdate',
-    speedLimit: 60
+    speedLimit: speedLimit
   }));
+}
+
+button_30.addEventListener('click', () => setSpeedLimit(30));
+button_40.addEventListener('click', () => setSpeedLimit(40));
+button_50.addEventListener('click', () => setSpeedLimit(50));
+button_60.addEventListener('click', () => setSpeedLimit(60));
+button_80.addEventListener('click', () => setSpeedLimit(80));
+button_custom_speed.addEventListener('click', () => {
+  const custom_speed = parseInt(document.getElementById('custom_speed').value, 10);
+  console.log(`custom_speed: ${custom_speed}`);
+  if (Number.isInteger(custom_speed)){
+    setSpeedLimit(custom_speed);
+  } else {
+    // does nothing and it's fine
+  }
 });
-button_80.addEventListener('click', function() {
-  socket.send(JSON.stringify({
-    type: 'admin',
-    action: 'speedLimitUpdate',
-    speedLimit: 80
-  }));
-});
+
+// button_60.addEventListener('click', function() {
+//   socket.send(JSON.stringify({
+//     type: 'admin',
+//     action: 'speedLimitUpdate',
+//     speedLimit: 60
+//   }));
+// });
+// button_80.addEventListener('click', function() {
+//   socket.send(JSON.stringify({
+//     type: 'admin',
+//     action: 'speedLimitUpdate',
+//     speedLimit: 80
+//   }));
+// });
