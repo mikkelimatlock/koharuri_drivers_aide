@@ -11,6 +11,7 @@ var current_state = 'default';
 // not really used now
 var current_mentality = 1; // positive for happier, negative for more worried.
 var speed_limit = 30; // km/h
+const high_rev_limit = 6000;
 
 // throttling function from somewhere prolly stolen and amalgated by Copilot
 
@@ -118,6 +119,7 @@ document.getElementById('wsButton').addEventListener('click', function() {
             if (parseInt(outGaugeData.speed) > speed_limit) {
               speedNumber.setAttribute('fill', '#ff4040');
               speedNumber.setAttribute('stroke', '#c71010');
+              // agent reaction implemented in processData (debounced)
             } else {
               speedNumber.setAttribute('fill', '#fff');
               speedNumber.setAttribute('stroke', '#d6d8d9');
@@ -129,10 +131,10 @@ document.getElementById('wsButton').addEventListener('click', function() {
           var tachoNumber = document.getElementById('tachoNumericalValue');
           if (tachoNumber) {
             tachoNumber.textContent = outGaugeData.rpm.toFixed(0);
-            if (outGaugeData.rpm > 6000) {
+            if (outGaugeData.rpm > high_rev_limit) {
               tachoNumber.setAttribute('fill', '#ff4040');
               tachoNumber.setAttribute('stroke', '#c71010');
-              // todo: over rev agent action
+              // agent reaction implemented in processData (debounced)
             } else {
               tachoNumber.setAttribute('fill', '#fff');
               tachoNumber.setAttribute('stroke', '#d6d8d9');
@@ -185,9 +187,13 @@ function processData(outGaugeData) {
   let audioElement = document.getElementById('agentAudio');
   if (audioElement.paused) {
     // if (outGaugeData.speed > speed_limit) {
-    if (outGaugeData.speed > (1.1 * speed_limit)) {
+    if (outGaugeData.speed > (speed_limit >= 100 ? 1.1 * speed_limit : speed_limit + 10)) {
       
       throttledChangeAgentState10('speeding');
+    }
+    // high rev warning
+    if (outGaugeData.rpm > (high_rev_limit + 150)) {
+      throttledChangeAgentState10('high_rev');
     }
   }
 }
@@ -202,7 +208,7 @@ function voiceRandomiser(event) {
     'praise': ['praise1.wav'],
     // 'right_side': ['right_side1.wav'],
     'speed_limit_change': ['speed_limit_change1.wav'],
-    'high_rev': ['high_rev1.wav'],
+    'high_rev': ['high_rev1.wav', 'high_rev2.wav'],
     'turn_left': ['turn_left1.wav'],
     'turn_right': ['turn_right1.wav'],
     'turn_500m_left': ['turn_500m_left1.wav'],
@@ -261,7 +267,7 @@ function changeAgentAudio(event, turn_direction=null) {
     return;
   }
   else {
-    if ((event == "turn" || event == "turn_500m" && turn_direction != null) {
+    if ((event == "turn" || event == "turn_500m") && turn_direction != null) {
       event = event + "_" + turn_direction;
     }
     audioPath = voiceRandomiser(event);
@@ -295,6 +301,7 @@ function changeAgentState(event, turn_direction=null) {
   /* corresponding emotions (for portrait) for each type of event */
   const emotionByEvent = {
     'speeding': 'worried',
+    'high_rev': 'worried',
     'praise': 'glad',
     'hard_brake': 'angry',
     'right_side': 'glad',
