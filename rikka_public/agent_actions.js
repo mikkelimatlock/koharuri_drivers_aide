@@ -222,6 +222,7 @@ function voiceRandomiser(event) {
   /* List of available voices for each type of content */
   const voices = {
     'angry': ['angry1.wav'],
+    'slam': ['angry1.wav'],
     'speeding': ['speeding1.wav', 'speeding2.wav'],
     'praise': ['praise1.wav'],
     // 'right_side': ['right_side1.wav'],
@@ -232,6 +233,7 @@ function voiceRandomiser(event) {
     'turn_500m_left': ['turn_500m_left1.wav'],
     'turn_500m_right': ['turn_500m_right1.wav'],
     'stop_sign': ['stop_sign1.wav'],
+    'startup': ['startup.wav'],
   }; 
   //
   /* Default state does not have voices */
