@@ -64,6 +64,7 @@ const httpServer = createServer(app);
 
 // const wss = new Server({ server: httpServer });
 const wss = new Server({ port: wsPort });
+let clientTypes = new Map();
 
 wss.on('connection', (ws) => {
   console.log('Client connected to WebSocket');
@@ -78,18 +79,50 @@ wss.on('connection', (ws) => {
     const data = JSON.parse(message);
     if(data.type === 'admin') {
       // Admin message
-      console.log('Admin message: ', data.message);
+      if (data.message) {
+        console.log('Admin message: ', data.message);
+      }
+      if (data.message == 'connected') {
+        clientTypes.set(ws, 'admin');
+      }
       if (data.action === 'speedLimitUpdate') {
         console.log(`Speed limit updated to ${data.speedLimit} km/h`);
         const speedLimitUpdatePacket = {
           type: 'speedLimitUpdate',
           speedLimit: data.speedLimit
         }
-        broadcast(speedLimitUpdatePacket, verbose=true);
+        broadcastToAgents(speedLimitUpdatePacket, verbose=true);
+      } else if (data.action === 'turnCall') {
+        // Turn call
+        console.log(`Turn call: ${data.direction}, ${data.distant ? '500m' : 'here'}`);
+        const turnCallPacket = {
+          type: 'turnCall',
+          direction: data.direction,
+          distant: data.distant
+        }
+        broadcastToAgents(turnCallPacket, verbose=true);
+      } else if (data.action === 'warnStopSign') {
+        // Warn about stop sign
+        console.log(`Stop sign ahead`);
+        const stopSignPacket = {
+          type: 'warnStopSign'
+        };
+        broadcastToAgents(stopSignPacket, verbose=true);
+
+      } else if (data.action === 'commentDriving') {
+        // Comment on driving
+        const commentPacket = {
+          type: 'commentDriving',
+          praise: data.praise // true or false
+        };
+        broadcastToAgents(commentPacket, verbose=true);
       }
     } else if (data.type === 'agent') {
       // Agent message
       console.log('Agent message: ', data.message);
+      if (data.message === 'connected') {
+        clientTypes.set(ws, 'agent');
+      }
     }
     
   });
@@ -109,6 +142,20 @@ function broadcast(data, verbose=false){
       }
     }
   });
+}
+
+function broadcastToAgents(data, verbose=false) {
+  wss.clients.forEach((client) => {
+    if (client.readyState == 1) {
+      if (clientTypes.get(client) === 'agent') {
+        client.send(JSON.stringify(data));
+        if (verbose) {
+          console.log(`Sent data to agent ${client._socket.remoteAddress}:${client._socket.remotePort}`);
+        }
+      }
+    }
+  });
+
 }
 
 function logClients(verbose=false){

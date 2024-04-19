@@ -3,6 +3,11 @@
   src: url('../fonts/din1451alt.ttf') format('truetype');
 }
 
+h4 {
+  font-family: 'DIN-1451';
+  color: #5f2e59;
+}
+
 .button-grid {
   display: flex;
   flex-direction: column;

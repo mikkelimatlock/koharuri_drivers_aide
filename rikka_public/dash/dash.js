@@ -40,6 +40,16 @@ button_60 = document.getElementById('button_60kph');
 button_80 = document.getElementById('button_80kph');
 button_custom_speed = document.getElementById('button_custom_speed');
 
+button_left_turn = document.getElementById('button_left_turn');
+button_right_turn = document.getElementById('button_right_turn');
+button_left_500m = document.getElementById('button_left_500m');
+button_right_500m = document.getElementById('button_right_500m');
+button_stop_sign = document.getElementById('button_stop_sign');
+
+button_praise = document.getElementById('button_praise');
+button_slam = document.getElementById('button_slam');
+
+
 function setSpeedLimit(speedLimit) {
   socket.send(JSON.stringify({
     type: 'admin',
@@ -47,6 +57,32 @@ function setSpeedLimit(speedLimit) {
     speedLimit: speedLimit
   }));
 }
+
+function turnCall(direction, distant=false) {
+  socket.send(JSON.stringify({
+    type: 'admin',
+    action: 'turnCall',
+    direction: direction,
+    distant: distant
+  }));
+}
+
+function warnStopSign() {
+  socket.send(JSON.stringify({
+    type: 'admin',
+    action: 'warnStopSign'
+  }));
+}
+
+function commentDriving(praise=true) {
+  socket.send(JSON.stringify({
+    type: 'admin',
+    action: 'commentDriving',
+    praise: praise,
+    message: praise ? 'That was decent!' : 'What the hell was that?'
+  }));
+}
+
 
 button_30.addEventListener('click', () => setSpeedLimit(30));
 button_40.addEventListener('click', () => setSpeedLimit(40));
@@ -63,17 +99,11 @@ button_custom_speed.addEventListener('click', () => {
   }
 });
 
-// button_60.addEventListener('click', function() {
-//   socket.send(JSON.stringify({
-//     type: 'admin',
-//     action: 'speedLimitUpdate',
-//     speedLimit: 60
-//   }));
-// });
-// button_80.addEventListener('click', function() {
-//   socket.send(JSON.stringify({
-//     type: 'admin',
-//     action: 'speedLimitUpdate',
-//     speedLimit: 80
-//   }));
-// });
+button_left_turn.addEventListener('click', () => turnCall('left'));
+button_right_turn.addEventListener('click', () => turnCall('right'));
+button_left_500m.addEventListener('click', () => turnCall('left', far=true));
+button_right_500m.addEventListener('click', () => turnCall('right', far=true));
+button_stop_sign.addEventListener('click', () => warnStopSign());
+
+button_praise.addEventListener('click', () => commentDriving(praise=true));
+button_slam.addEventListener('click', () => commentDriving(praise=false));

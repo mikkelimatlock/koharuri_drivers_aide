@@ -15,27 +15,27 @@ const high_rev_limit = 6100;
 
 // throttling function from somewhere prolly stolen and amalgated by Copilot
 
-// tooo complex version
-// function throttle(func, limit) {
-//   let lastFunc;
-//   let lastRan;
-//   return function() {
-//     const context = this;
-//     const args = arguments;
-//     if (!lastRan) {
-//       func.apply(context, args);
-//       lastRan = Date.now();
-//     } else {
-//       clearTimeout(lastFunc);
-//       lastFunc = setTimeout(function() {
-//         if ((Date.now() - lastRan) >= limit) {
-//           func.apply(context, args);
-//           lastRan = Date.now();
-//         }
-//       }, limit - (Date.now() - lastRan));
-//     }
-//   }
-// }
+// queued version
+function throttleQueued(func, limit) {
+  let lastFunc;
+  let lastRan;
+  return function() {
+    const context = this;
+    const args = arguments;
+    if (!lastRan) {
+      func.apply(context, args);
+      lastRan = Date.now();
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(function() {
+        if ((Date.now() - lastRan) >= limit) {
+          func.apply(context, args);
+          lastRan = Date.now();
+        }
+      }, limit - (Date.now() - lastRan));
+    }
+  }
+}
 
 function throttle(func, limit) {
   let lastRan;
@@ -63,8 +63,7 @@ var socket;
 var isConnected = false;
 const _VERBOSE_ALERT = false;
 
-function gearIndexToText(gearNum) {
-  var automatic = true;
+function gearIndexToText(gearNum, automatic = true) {
   if (gearNum === 0) {
     return 'R';
   } else if (gearNum === 1) {
@@ -110,8 +109,8 @@ document.getElementById('wsButton').addEventListener('click', function() {
         const receivedData = JSON.parse(event.data);
         if (receivedData.type === 'outGaugeData') {
           const outGaugeData = receivedData;
-          console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
-          console.log(`Gear: ${gearIndexToText(outGaugeData.gear)}, RPM: ${outGaugeData.rpm.toFixed(0)}`);
+          // console.log(`Speed: ${outGaugeData.speed.toFixed(2)} km/h, brake: ${(outGaugeData.brake * 100).toFixed(1)}%`);
+          // console.log(`Gear: ${gearIndexToText(outGaugeData.gear)}, RPM: ${outGaugeData.rpm.toFixed(0)}`);
           var speedNumber = document.getElementById('speedNumericalValue');
           if (speedNumber) {
             speedNumber.textContent = outGaugeData.speed.toFixed(0);
@@ -149,18 +148,37 @@ document.getElementById('wsButton').addEventListener('click', function() {
             console.log('Element not found');
           }
           debouncedProcessData(outGaugeData);
-        }
-        if (receivedData.type === 'speedLimitUpdate') {
-          console.log(`Speed limit updated to ${receivedData.speedLimit} km/h`);
-          speed_limit = parseInt(receivedData.speedLimit, 10);
-          var speedLimitNumber = document.getElementById('speedLimitNumericalValue');
-          if (speedLimitNumber) {
-            speedLimitNumber.textContent = speed_limit;
-            // console.log('Element found:', speedLimitNumber);
-          } else {
-            console.log('Element not found');
+        } else {
+          console.log(receivedData.type);
+          if (receivedData.type === 'speedLimitUpdate') {
+            console.log(`Speed limit updated to ${receivedData.speedLimit} km/h`);
+            speed_limit = parseInt(receivedData.speedLimit, 10);
+            var speedLimitNumber = document.getElementById('speedLimitNumericalValue');
+            if (speedLimitNumber) {
+              speedLimitNumber.textContent = speed_limit;
+              // console.log('Element found:', speedLimitNumber);
+            } else {
+              console.log('Element not found');
+            }
+            changeAgentState('speed_limit_change');    
           }
-          changeAgentState('speed_limit_change');    
+          if (receivedData.type === 'turnCall') {
+            console.log(`Turn call: ${receivedData.direction}, 500m: ${receivedData.distant}`);
+            changeAgentState('turn', receivedData.direction, receivedData.distant);
+          }
+          if (receivedData.type === 'warnStopSign') {
+            console.log(`Stop sign ahead`);
+            changeAgentState('stop_sign');
+          }
+          if (receivedData.type === 'commentDriving') {
+            console.log(`Comment on driving: ${receivedData.praise ? 'praise' : 'slam'}`);
+            if (receivedData.praise) {
+              changeAgentState('praise');
+            }
+            else {
+              changeAgentState('slam');
+            }
+          }
         }
       }
       else {
@@ -260,7 +278,7 @@ function changeAgentAnimation(intensity) {
   }
 }
 
-function changeAgentAudio(event, turn_direction=null) {
+function changeAgentAudio(event, turn_direction=null, turn_distant=null) {
   let agentAudio = document.getElementById('agentAudio');
   if (event === 'default') {
     agentAudio.src = '';
@@ -268,8 +286,8 @@ function changeAgentAudio(event, turn_direction=null) {
     return;
   }
   else {
-    if ((event == "turn" || event == "turn_500m") && turn_direction != null) {
-      event = event + "_" + turn_direction;
+    if (event == "turn" && turn_direction != null && turn_distant != null) {
+      event = event + (turn_distant ? "_500m" : "") + "_" + turn_direction;
     }
     audioPath = voiceRandomiser(event);
     agentAudio.src = audioPath;
@@ -294,20 +312,23 @@ function changeAgentStateBackupTimer() {
   
 }
 
-function changeAgentState(event, turn_direction=null) {
+function changeAgentState(event, turn_direction=null, turn_distant=null) {
   console.log("changing agent state to " + event);
   let agent = document.getElementById('agent');
   agent.dataset.currentevent = event;
 
   /* corresponding emotions (for portrait) for each type of event */
   const emotionByEvent = {
+    'startup': 'default2',
     'speeding': 'worried',
     'high_rev': 'worried',
     'praise': 'glad',
     'hard_brake': 'angry',
+    'slam': 'angry',
     'right_side': 'glad',
     'speed_limit_change': 'default2',
     'turn': 'default2',
+    'stop_sign': 'default2',
   }
   /* animations and fixing the div element */ 
   const shakingIntensity = {
@@ -315,6 +336,7 @@ function changeAgentState(event, turn_direction=null) {
     'worried': 'medium',
     'glad': 'light',
     'right_side': 'light',
+    'default2': 'light',
   };
   
   emotion = emotionByEvent[event];
@@ -325,7 +347,7 @@ function changeAgentState(event, turn_direction=null) {
   else {
     current_state = event;
     changeAgentPortrait(emotion);
-    changeAgentAudio(event, turn_direction);
+    changeAgentAudio(event, turn_direction, turn_distant);
     changeAgentAnimation(shakingIntensity[emotion]);
   }
 }
