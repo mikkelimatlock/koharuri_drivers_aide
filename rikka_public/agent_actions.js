@@ -221,26 +221,27 @@ const debouncedProcessData = debounce(processData, 400);
 function voiceRandomiser(event) {
   /* List of available voices for each type of content */
   const voices = {
-    'angry': ['angry1.wav'],
-    'slam': ['angry1.wav'],
-    'speeding': ['speeding1.wav', 'speeding2.wav'],
-    'praise': ['praise1.wav'],
-    // 'right_side': ['right_side1.wav'],
-    'speed_limit_change': ['speed_limit_change1.wav'],
-    'high_rev': ['high_rev1.wav', 'high_rev2.wav'],
-    'turn_left': ['turn_left1.wav'],
-    'turn_right': ['turn_right1.wav'],
-    'turn_500m_left': ['turn_500m_left1.wav'],
-    'turn_500m_right': ['turn_500m_right1.wav'],
-    'stop_sign': ['stop_sign1.wav'],
-    'startup': ['startup.wav'],
+    'angry': ['angry1'],
+    'slam': ['angry1'],
+    'speeding': ['speeding1', 'speeding2'],
+    'praise': ['praise1'],
+    // 'right_side': ['right_side1'],
+    'speed_limit_change': ['speed_limit_change1'],
+    'high_rev': ['high_rev1', 'high_rev2'],
+    'turn_left': ['turn_left1'],
+    'turn_right': ['turn_right1'],
+    'turn_500m_left': ['turn_500m_left1'],
+    'turn_500m_right': ['turn_500m_right1'],
+    'stop_sign': ['stop_sign1'],
+    'startup': ['startup'],
   }; 
   //
   /* Default state does not have voices */
   if (event != 'default') {
     if (voices[event] && voices[event].length > 0) {
       let randomIndex = Math.floor(Math.random() * voices[event].length);
-      return 'voices/rikka/' + voices[event][randomIndex];
+      const ext = 'wav';
+      return `voices/rikka/${ext}/` + voices[event][randomIndex] + `.${ext}`;
     }
   }
 }
@@ -342,7 +343,7 @@ function changeAgentState(event, turn_direction=null, turn_distant=null) {
   };
   
   emotion = emotionByEvent[event];
-  console.log(`picked emotion: ${emotion}`);
+  // console.log(`picked emotion: ${emotion}`);
 
   if (event === 'default') {
     resetAgentState();
