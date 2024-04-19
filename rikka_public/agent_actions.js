@@ -240,7 +240,7 @@ function voiceRandomiser(event) {
   if (event != 'default') {
     if (voices[event] && voices[event].length > 0) {
       let randomIndex = Math.floor(Math.random() * voices[event].length);
-      const ext = 'wav';
+      const ext = 'aac';
       return `voices/rikka/${ext}/` + voices[event][randomIndex] + `.${ext}`;
     }
   }
