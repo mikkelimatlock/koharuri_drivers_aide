@@ -340,6 +340,7 @@ function changeAgentState(event, turn_direction=null, turn_distant=null) {
   };
   
   emotion = emotionByEvent[event];
+  console.log(`picked emotion: ${emotion}`);
 
   if (event === 'default') {
     resetAgentState();
