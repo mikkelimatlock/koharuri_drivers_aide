@@ -213,6 +213,7 @@ function voiceRandomiser(event) {
     'turn_right': ['turn_right1.wav'],
     'turn_500m_left': ['turn_500m_left1.wav'],
     'turn_500m_right': ['turn_500m_right1.wav'],
+    'stop_sign': ['stop_sign1.wav'],
   }; 
   //
   /* Default state does not have voices */
