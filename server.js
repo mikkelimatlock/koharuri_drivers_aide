@@ -64,6 +64,8 @@ const httpServer = createServer(app);
 
 // const wss = new Server({ server: httpServer });
 const wss = new Server({ port: wsPort });
+
+// client type map, for identifying admin and agent clients
 let clientTypes = new Map();
 
 wss.on('connection', (ws) => {

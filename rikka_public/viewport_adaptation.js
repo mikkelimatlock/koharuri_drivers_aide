@@ -1,6 +1,6 @@
 function adjustAgentSize() {
   var agent = document.getElementById('agent');
-  var aspectRatio = 2604 / 2456;
+  var aspectRatio = 16 / 10;
   var viewportAspectRatio = window.innerWidth / window.innerHeight;
 
   if (viewportAspectRatio > aspectRatio) {

@@ -117,11 +117,9 @@ document.getElementById('wsButton').addEventListener('click', function() {
             // comment this out when experimenting with speed limit
             if (parseInt(outGaugeData.speed) > speed_limit) {
               speedNumber.setAttribute('fill', '#ff4040');
-              speedNumber.setAttribute('stroke', '#c71010');
               // agent reaction implemented in processData (debounced)
             } else {
               speedNumber.setAttribute('fill', '#fff');
-              speedNumber.setAttribute('stroke', '#d6d8d9');
             }
             // console.log('Element found:', speedNumber);
           } else {
@@ -132,11 +130,9 @@ document.getElementById('wsButton').addEventListener('click', function() {
             tachoNumber.textContent = outGaugeData.rpm.toFixed(0);
             if (outGaugeData.rpm > high_rev_limit) {
               tachoNumber.setAttribute('fill', '#ff4040');
-              tachoNumber.setAttribute('stroke', '#c71010');
               // agent reaction implemented in processData (debounced)
             } else {
               tachoNumber.setAttribute('fill', '#fff');
-              tachoNumber.setAttribute('stroke', '#d6d8d9');
             }
           } else {
             console.log('Element not found');

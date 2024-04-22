@@ -76,80 +76,163 @@ body {
   background-color: #585777;
 }
 
-#agent {
-  position: fixed; /* Keeps the agent in a fixed position */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 88vw; 
-  max-height: 88vh; /* Maximum height as a percentage of the viewport height */
-  aspect-ratio: 2604 / 2456;
-  width: 88vw;
-  /* margin-left: auto;
-  margin-right: auto; */
-  display: flex; /* Using flexbox for centering content */
-  justify-content: center; /* Center horizontally in the flex container */
-  align-items: center; 
-  transition: width 0.5s ease-in-out; /* Smooth transition for resizing */
-  background-color: rgba(142, 144, 195, 0.5);
+@media screen and (orientation: landscape) {
+  #agent {
+    position: fixed; /* Keeps the agent in a fixed position */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 88vw; 
+    max-height: 88vh; /* Maximum height as a percentage of the viewport height */
+    /* aspect-ratio: 2604 / 2456; */
+    aspect-ratio: 16 / 10;
+    width: 88vw;
+    /* margin-left: auto;
+    margin-right: auto; */
+    display: flex; /* Using flexbox for centering content */
+    justify-content: center; /* Center horizontally in the flex container */
+    align-items: center; 
+    transition: width 0.5s ease-in-out; /* Smooth transition for resizing */
+  }
+  
+  #agent:before {
+    content: "";
+    display: block;
+    padding-top: 62.5%; 
+  }
+  
+  #agentPortraitAnchor{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #8e90c3cc;
+  }
+  
+  #agentPortrait, #svgSpeedLimit, #svgSpeedoTachoMeter, #wsButton{
+    position: absolute;
+    object-fit: contain;
+  }
+  
+  #agentPortrait {
+    bottom: 0;
+    left: 2%;
+    max-height: 100%;
+    /* max-width: 100%; */
+  }
+  
+  #svgSpeedLimit, #svgSpeedoTachoMeter {
+    right: 5%;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #svgSpeedLimit {
+    top: 5%;
+    height: 35%;
+  }
+  
+  #svgSpeedoTachoMeter {
+    bottom: 5%;
+    height: 50%;
+  }
+  
+  #svgSpeedLimit, #svgSpeedoTachoMeter > svg {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  #wsButton {
+    bottom: 1%;
+    left: 1%;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #ddd;
+    background-color: #585777;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
 }
 
-#agent:before {
-  content: "";
-  display: block;
-  padding-top: 94%; 
-}
+@media screen and (orientation: portrait) {
+    #agent {
+    position: fixed; /* Keeps the agent in a fixed position */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 88vw; 
+    max-height: 88vh; /* Maximum height as a percentage of the viewport height */
+    aspect-ratio: 2604 / 2456;
+    width: 88vw;
+    /* margin-left: auto;
+    margin-right: auto; */
+    display: flex; /* Using flexbox for centering content */
+    justify-content: center; /* Center horizontally in the flex container */
+    align-items: center; 
+    transition: width 0.5s ease-in-out; /* Smooth transition for resizing */
+    background-color: rgba(142, 144, 195, 0.5);
+  }
 
-#agentPortraitAnchor{
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
+  #agent:before {
+    content: "";
+    display: block;
+    padding-top: 94%; 
+  }
 
-#agentPortrait, #svgSpeedLimit, #svgSpeedoTachoMeter, #wsButton{
-  position: absolute;
-  object-fit: contain;
-}
+  #agentPortraitAnchor{
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 
-#agentPortrait {
-  top: 0;
-  left: 0;
-  max-height: 100%;
-  /* max-width: 100%; */
-}
+  #agentPortrait, #svgSpeedLimit, #svgSpeedoTachoMeter, #wsButton{
+    position: absolute;
+    object-fit: contain;
+  }
 
-#svgSpeedLimit, #svgSpeedoTachoMeter {
-  right: 2%;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  #agentPortrait {
+    top: 0;
+    left: 0;
+    max-height: 100%;
+    /* max-width: 100%; */
+  }
 
-#svgSpeedLimit {
-  top: 28%;
-  width: 33%;
-}
+  #svgSpeedLimit, #svgSpeedoTachoMeter {
+    right: 2%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-#svgSpeedoTachoMeter {
-  top: 59%;
-  width: 40%;
-}
+  #svgSpeedLimit {
+    top: 28%;
+    width: 33%;
+  }
 
-#svgSpeedLimit, #svgSpeedoTachoMeter > svg {
-  max-width: 100%;
-  max-height: 100%;
-}
+  #svgSpeedoTachoMeter {
+    top: 59%;
+    width: 40%;
+  }
 
-#wsButton {
-  bottom: 1%;
-  left: 1%;
-  padding: 10px 20px;
-  font-size: 1em;
-  color: #ddd;
-  background-color: #585777;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  #svgSpeedLimit, #svgSpeedoTachoMeter > svg {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  #wsButton {
+    bottom: 1%;
+    left: 1%;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #ddd;
+    background-color: #585777;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
 }
