@@ -91,6 +91,7 @@ function genericPrompt(prompt) {
     prompt: prompt,
     message: `prompt: ${prompt}`
   }));
+  // console.log(`button clicked: ${prompt}`);
 }
 
 
