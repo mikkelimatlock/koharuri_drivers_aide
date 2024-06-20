@@ -224,7 +224,7 @@ function voiceRandomiser(event) {
     'angry': ['angry1'],
     'slam': ['angry1'],
     'speeding': ['speeding1', 'speeding2'],
-    'praise': ['praise1'],
+    'praise': ['praise1', 'praise2'],
     // 'right_side': ['right_side1'],
     'speed_limit_change': ['speed_limit_change1'],
     'high_rev': ['high_rev1', 'high_rev2'],
@@ -234,8 +234,8 @@ function voiceRandomiser(event) {
     'turn_500m_right': ['turn_500m_right1'],
     'stop_sign': ['stop_sign1'],
     'startup': ['startup'],
-    'relax': ['relax1'],
-    'curve': ['curve1'],
+    'relax': ['relax1', 'relax2', 'relax3'],
+    'curve': ['curve1', 'curve2', 'curve3'],
   }; 
   //
   /* Default state does not have voices */
