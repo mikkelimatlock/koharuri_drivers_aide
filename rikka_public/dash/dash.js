@@ -89,7 +89,7 @@ function genericPrompt(prompt) {
     type: 'admin',
     action: 'genericPrompt',
     prompt: prompt,
-    message: 'prompt: ' + propmt
+    message: `prompt: ${prompt}`
   }));
 }
 
