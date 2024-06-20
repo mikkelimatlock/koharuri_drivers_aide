@@ -48,7 +48,8 @@ button_stop_sign = document.getElementById('button_stop_sign');
 
 button_praise = document.getElementById('button_praise');
 button_slam = document.getElementById('button_slam');
-
+button_relax = document.getElementById('button_relax');
+button_curve = document.getElementById('button_curve');
 
 function setSpeedLimit(speedLimit) {
   socket.send(JSON.stringify({
@@ -83,6 +84,15 @@ function commentDriving(praise=true) {
   }));
 }
 
+function genericPrompt(prompt) {
+  socket.send(JSON.stringify({
+    type: 'admin',
+    action: 'genericPrompt',
+    prompt: prompt,
+    message: 'prompt: ' + propmt
+  }));
+}
+
 
 button_30.addEventListener('click', () => setSpeedLimit(30));
 button_40.addEventListener('click', () => setSpeedLimit(40));
@@ -107,3 +117,5 @@ button_stop_sign.addEventListener('click', () => warnStopSign());
 
 button_praise.addEventListener('click', () => commentDriving(praise=true));
 button_slam.addEventListener('click', () => commentDriving(praise=false));
+button_relax.addEventListener('click', () => genericPrompt('relax'));
+button_curve.addEventListener('click', () => genericPrompt('curve'));

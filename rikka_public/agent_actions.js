@@ -175,6 +175,10 @@ document.getElementById('wsButton').addEventListener('click', function() {
               changeAgentState('slam');
             }
           }
+          if (receivedData.type === 'genericPrompt') {
+            console.log(`Generic prompt: ${receivedData.prompt}`);
+            changeAgentState(receivedData.prompt);
+          }
         }
       }
       else {
@@ -230,6 +234,8 @@ function voiceRandomiser(event) {
     'turn_500m_right': ['turn_500m_right1'],
     'stop_sign': ['stop_sign1'],
     'startup': ['startup'],
+    'relax': ['relax1'],
+    'curve': ['curve1'],
   }; 
   //
   /* Default state does not have voices */
@@ -328,6 +334,8 @@ function changeAgentState(event, turn_direction=null, turn_distant=null) {
     'speed_limit_change': 'default2',
     'turn': 'default2',
     'stop_sign': 'default2',
+    'relax': 'glad',
+    'curve': 'default2',
   }
   /* animations and fixing the div element */ 
   const shakingIntensity = {

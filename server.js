@@ -118,6 +118,13 @@ wss.on('connection', (ws) => {
           praise: data.praise // true or false
         };
         broadcastToAgents(commentPacket, verbose=true);
+      } else if (data.action === 'genericPrompt') {
+        // Generic prompt
+        const genericPromptPacket = {
+          type: 'genericPrompt',
+          prompt: data.prompt
+        };
+        broadcastToAgents(genericPromptPacket, verbose=true);
       }
     } else if (data.type === 'agent') {
       // Agent message
