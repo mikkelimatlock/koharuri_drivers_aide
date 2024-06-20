@@ -95,6 +95,7 @@ document.getElementById('wsButton').addEventListener('click', function() {
       } else {
         console.log('Element not found');
       }
+      changeAgentState('startup');
       // Todo: add an agent action prompting that connection is established
     }
     socket.onclose = () => {
